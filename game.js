@@ -7,8 +7,8 @@ var config = {
 	},
 	scale: {
 		mode: Phaser.Scale.FIT,
-		height: 800, // 480,
-		width: 500, //480,
+		height: 480,
+		width: 640,
 	},
 	physics: {
 		default: 'arcade',
@@ -33,14 +33,12 @@ var cursors;
 var game = new Phaser.Game(config);
 
 function preload() {
-	this.load.image('sky', 'path/to/your/sky.png');
+	// this.load.image('sky', 'path/to/your/sky.png');
 	this.load.image('ground', 'path/to/your/platform.png');
 	this.load.image('dude', 'game/assets/art/Blue.png');
 }
 
 function create() {
-	// this.add.image(400, 300, 'sky');
-
 	platforms = this.physics.add.staticGroup();
 
 	platforms.create(400, 568, 'ground').setScale(2).refreshBody();
