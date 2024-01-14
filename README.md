@@ -2,7 +2,7 @@
 
 `ppa-lol`
 
-Run the test project...
+Run the project...
 
 ```bash
 npm start
