@@ -48,6 +48,10 @@ function create() {
 	player.setBounce(0.2);
 	player.setCollideWorldBounds(true);
 
+	// StateEngine.saveData("testFile", "testKey", "foo");
+	// let t = StateEngine.loadData("testFile", "testKey");
+	// text = this.add.text(10, 10, t, { font: '16px Courier', fill: '#00ff00' });
+
 	this.physics.add.collider(player, platforms);
 
 	cursors = this.input.keyboard.createCursorKeys();
