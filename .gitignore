@@ -18,3 +18,5 @@ bin-release/
 # information for Eclipse / Flash Builder.
 /node_modules/
 /.idea/
+*.tiled-session
+*.tiled-project
