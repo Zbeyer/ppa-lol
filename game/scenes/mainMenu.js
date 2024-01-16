@@ -6,22 +6,25 @@ class MainMenu extends Phaser.Scene
 		let text = this.add.text(Dims.padding, Dims.padding, 'Main Menu', { fontFamily: 'Verdana', fontSize: 32, color: '#ffffff'});
 		scene.buttons = [];
 		let helper = new Helpers();
+		let menuMusic = scene.bgMucic ||scene.sound.add('backgroundMenuMusic', {loop: true, volume: Settings.musicVolume}).play();
+		scene.bgMucic = menuMusic;
 
 		helper.createButton(this, 'Debug Level', function () {
 			scene.scene.start('DebugLevel');
-
 			scene.scene.stop('MainMenu');
+			// menuMusic.stop();
 		});
 		helper.createButton(this, 'Credits', function () {
 			scene.scene.start('Credits');
 			scene.scene.stop('MainMenu');
+			// menuMusic.stop();
 		});
 		//
 		helper.createButton(this, 'Quit', function () {
 			scene.scene.start('Quit');
+			// menuMusic.stop();
 		});
 
-		scene.sound.add('backgroundMenuMusic', {loop: true, volume: Settings.musicVolume}).play();
 
 		// let audioContext = scene.sound.context;
 		// let gainNode = audioContext.createGain();
