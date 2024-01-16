@@ -26,41 +26,57 @@ var config = {
 	}
 };
 
-// var player;
-var platforms;
-var cursors;
-var game = new Phaser.Game(config);
-function preload() {
-	// this.load.image('sky', 'path/to/your/sky.png');
-	this.load.image('ground', 'path/to/your/platform.png');
-	this.load.image('gem', 'game/assets/art/Blue.png');
+let game = new Phaser.Game(config);
 
-	this.load.tilemapTiledJSON('map', 'game/assets/tilemaps/exports/samplemap.json'); // 'map' is the key used in preload
-	this.load.image('tilemap', 'game/assets/art/tilemap.jpg');
+function preload() {
+	this.load.image('gem', 'game/assets/art/Blue.png');
+	this.load.tilemapTiledJSON('map', 'game/assets/maps/exports/samplemap.json'); // 'map' is the key used in preload
+	this.load.image('tilesImage', 'game/assets/art/tilesImage.jpg');
 }
 
 function create() {
-	const fps = 1000 / 60;
 
 	let player = this.physics.add.sprite(100, 64, 'gem');
+	this.cameras.main.startFollow(player);
+	this.physics.world.enable(player);
+	player.setBounce(0.32);
+
 	let movement = new PlayerMovement();
 	movement.input = this.input;
 	movement.player = player;
 	movement.cursors = this.input.keyboard.createCursorKeys();
 
-	platforms = this.physics.add.staticGroup();
-	platforms.create(300, 568, 'ground').setScale(2).refreshBody();
+	let map = this.make.tilemap({ key: 'map' }); // 'map' is the key used in preload
+	// this.map.setCollision([ 1, ]);
+	map.setCollisionBetween(1, 2000);
+
+	let tileset = map.addTilesetImage('allMyTiles', 'tilesImage'); // 'yourTilesetName' is the name of the tileset in the JSON file
+
+	// Create layers
+	let groundLayer = map.createLayer('groundLayer', tileset, 0, 0);
 
 
-	player.setBounce(0.32);
-	player.setCollideWorldBounds(true);
+	this.physics.add.collider(player, groundLayer);
 
-	let cursors = this.input.keyboard.createCursorKeys();
+	debugText(this, player);
+}
 
-	let debugInfo = this.add.text(10, 10, 'Hello World', { font: '24px Courier', fill: '#FFFFFF', backgroundColor: '#001122', padding: { x: 16, y: 16 }});
+function update() {
+	const movement = new PlayerMovement();
+	movement.movement();
+}
+
+trackMovement = function (scene, player) {
+
+}
+
+debugText = function (scene, player) {
+	const fps = 1000 / 60;
+	let debugInfo = scene.add.text(0, 0, 'FooBar', { font: '24px Courier', fill: '#FFFFFF', backgroundColor: '#001122', padding: { x: 16, y: 16 }});
 	setInterval(function () {
 		let now = new Date();
-		// tObj.push('foo');
+		debugInfo.x = player.x - debugInfo.width / 2;
+		debugInfo.y = player.y - debugInfo.height  - 40;
 		debugInfo.setText([
 			now.getTime(),
 			now,
@@ -71,23 +87,6 @@ function create() {
 			'touching: ' + player.body.touching.down,
 			'onFloor: ' + player.body.onFloor(),
 			'blocked: ' + player.body.blocked.down,
-			'space: ' + cursors.space.isDown,
 		]);
 	}, fps);
-
-	// setTimeout(function () {
-	// 	movement.defaultDownVelocity = player.body.velocity.y;
-	// }, 200);
-
-	// let map = this.make.tilemap({ key: 'map' });
-	// const tileset = map.addTilesetImage('tilemap');
-	// const layer = map.createLayer('layer', tileset, 64, 64);
-	// layer.setScale(8);
-
-	this.physics.add.collider(player, platforms);
-}
-
-function update() {
-	const movement = new PlayerMovement();
-	movement.movement();
 }
