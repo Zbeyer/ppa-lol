@@ -1,0 +1,15 @@
+# electron-builder.yml
+appId: com.zbeyer.ppa
+productName: Pixel-Pulse-Adventure
+directories:
+    output: dist
+files:
+    - "dist/electron/**/*"
+    - "node_modules/**/*"
+electronVersion: "12.0.0"
+mac:
+    target: ["dmg", "zip"]
+win:
+    target: ["nsis", "zip"]
+linux:
+    target: ["AppImage", "deb", "rpm", "tar.gz"]
