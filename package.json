@@ -5,13 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development electron ."
+    "start": "NODE_ENV=development electron .",
+    "run": "webpack serve --mode development --open",
+    "build": "webpack --mode production",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.1.2",
+    "electron-builder": "^24.9.1",
     "electron-reload": "^2.0.0-alpha.1"
   },
   "dependencies": {

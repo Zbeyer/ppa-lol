@@ -40,3 +40,16 @@ app.on('window-all-closed', function () {
 app.on('activate', function () {
 	if (mainWindow === null) createWindow();
 });
+
+module.exports = {
+	entry: './src/index.js',
+	output: {
+		filename: 'bundle.js',
+		path: path.resolve(__dirname, 'dist'),
+	},
+	devServer: {
+		contentBase: path.join(__dirname, 'src'),
+		port: 3000,
+		open: true,
+	},
+};
