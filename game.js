@@ -13,7 +13,7 @@ var config = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			gravity: { y: 300 },
+			gravity: { y: 700 },
 			debug: false
 		}
 	},
@@ -27,24 +27,22 @@ var config = {
 };
 
 let game = new Phaser.Game(config);
+const fps = 1000 / 60;
 
 function preload() {
 	this.load.image('gem', 'game/assets/art/Blue.png');
-	this.load.tilemapTiledJSON('map', 'game/assets/maps/exports/samplemap.json'); // 'map' is the key used in preload
+	this.load.tilemapTiledJSON('map', 'game/assets/maps/exports/test_map_two.json'); // 'map' is the key used in preload
 	this.load.image('tilesImage', 'game/assets/art/tilesImage.jpg');
 }
 
 function create() {
 
-	let player = this.physics.add.sprite(100, 64, 'gem');
+	let player = this.physics.add.sprite(256, 512, 'gem');
 	this.cameras.main.startFollow(player);
 	this.physics.world.enable(player);
-	player.setBounce(0.32);
+	player.setScale(player.scale / 1.334);
+	player.setBounce(0.16);
 
-	let movement = new PlayerMovement();
-	movement.input = this.input;
-	movement.player = player;
-	movement.cursors = this.input.keyboard.createCursorKeys();
 
 	let map = this.make.tilemap({ key: 'map' }); // 'map' is the key used in preload
 	// this.map.setCollision([ 1, ]);
@@ -54,39 +52,36 @@ function create() {
 
 	// Create layers
 	let groundLayer = map.createLayer('groundLayer', tileset, 0, 0);
-
-
 	this.physics.add.collider(player, groundLayer);
 
 	debugText(this, player);
+	movement(this, player);
 }
 
-function update() {
+function update() { }
+
+movement = function (scene, player) {
 	const movement = new PlayerMovement();
-	movement.movement();
-}
-
-trackMovement = function (scene, player) {
-
+	movement.input = scene.input;
+	movement.player = player;
+	movement.cursors = scene.input.keyboard.createCursorKeys();
+	setInterval(function () {
+		movement.movement();
+	}, fps);
 }
 
 debugText = function (scene, player) {
-	const fps = 1000 / 60;
 	let debugInfo = scene.add.text(0, 0, 'FooBar', { font: '24px Courier', fill: '#FFFFFF', backgroundColor: '#001122', padding: { x: 16, y: 16 }});
 	setInterval(function () {
 		let now = new Date();
 		debugInfo.x = player.x - debugInfo.width / 2;
-		debugInfo.y = player.y - debugInfo.height  - 40;
+		debugInfo.y = player.y - debugInfo.height  - 64;
 		debugInfo.setText([
-			now.getTime(),
-			now,
-			'x: ' + player.x.toFixed(2),
-			'y: ' + player.y.toFixed(2),
-			'vx: '+ player.body.velocity.x.toFixed(1),
-			'vy: '+ player.body.velocity.y.toFixed(1),
-			'touching: ' + player.body.touching.down,
-			'onFloor: ' + player.body.onFloor(),
-			'blocked: ' + player.body.blocked.down,
+			now.getTime() + '\t\t' + now.toLocaleTimeString(),
+			'x: ' + player.x.toFixed(1) + '\t\t\t\ty: ' + player.y.toFixed(1),
+			'vx: '+ player.body.velocity.x.toFixed(1) + '\t\t\t\tvy: '+ player.body.velocity.y.toFixed(1),
+			'jumps: ' + player.jumps,
+			'onFloor: ' + player.body.onFloor()
 		]);
 	}, fps);
 }

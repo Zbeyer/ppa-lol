@@ -5,7 +5,7 @@ class PlayerMovement
 		if (!PlayerMovement.instance)
 		{
 			this.speed = 64 * 8;
-			this.jumpStrength = 64 * 3;
+			this.jumpStrength = 64 * 7;
 			PlayerMovement.instance = this;
 		}
 		return PlayerMovement.instance;
@@ -14,14 +14,20 @@ class PlayerMovement
 	{
 		const cursors = this.cursors;
 		const input = this.input;
+		if (this.player.body.onFloor())
+		{
+			this.player.jumps = 0;
+		}
+		// let liftSpeed = Math.abs(this.player.velocity.y);
+
+		const isDoubleJumpAvailable = this.player.jumps < 2;
 
 		const shouldMoveLeft = cursors.left.isDown || input.keyboard.addKey('A').isDown;
 		const shouldMoveRight = cursors.right.isDown || input.keyboard.addKey('D').isDown;
 		const shouldDecelerate = !shouldMoveLeft && !shouldMoveRight;
-		const shouldMoveDown = cursors.down.isDown || input.keyboard.addKey('S').isDown;
-		const shouldJump =  (cursors.up.isDown && this.player.body.onFloor())
-			|| (input.keyboard.addKey('W').isDown && this.player.body.onFloor())
-			|| (cursors.space.isDown && this.player.body.onFloor());
+		const shouldJump =  (cursors.up.isDown && (this.player.body.onFloor() || isDoubleJumpAvailable)
+			|| (input.keyboard.addKey('W').isDown && (this.player.body.onFloor() || isDoubleJumpAvailable)
+			|| (cursors.space.isDown && (this.player.body.onFloor() || isDoubleJumpAvailable))));
 		// this.player.setVelocityX(0);
 		if (shouldMoveLeft) {
 			this.moveLeft();
@@ -33,9 +39,14 @@ class PlayerMovement
 			this.player.setVelocityX(0);
 		}
 		if (shouldJump) {
+			let now = (new Date()).getTime();
+			if (now - this.player.lastJump < 320) {
+				return;
+			}
 			this.moveUp();
-		} else if (shouldMoveDown) {
-			this.moveDown();
+
+			this.player.lastJump = now;
+			this.player.jumps++;
 		}
 	}
 	moveLeft ()
@@ -49,10 +60,7 @@ class PlayerMovement
 	moveUp ()
 	{
 		this.player.setVelocityY(-1 * this.jumpStrength);
-	}
-	moveDown ()
-	{
-		this.player.setVelocityY(this.speed);
-		this.player.setVelocityY(0);
+		let now = (new Date()).getTime();
+		this.player.lastJump = now;
 	}
 }
