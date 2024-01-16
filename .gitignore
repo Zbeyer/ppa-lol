@@ -20,3 +20,4 @@ bin-release/
 /.idea/
 *.tiled-session
 *.tiled-project
+dist/**
