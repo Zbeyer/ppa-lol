@@ -20,8 +20,75 @@ class DebugLevel extends Phaser.Scene {
 		let groundLayer = map.createLayer('groundLayer', tileset, 0, 0);
 		this.physics.add.collider(player, groundLayer);
 
-		this.debugText(this, player);
+		this.escapeMenu(this);
+		this.inventory(this, player);
+		// this.debugText(this, player);
 		this.movement(this, player);
+	}
+
+	escapeMenu = function (scene) {
+		scene.input.keyboard.on('keydown-ESC', function (event) {
+			scene.scene.start('MainMenu');
+			scene.scene.stop('DebugLevel')
+		}, scene);
+	}
+	inventory = function (scene, player) {
+		let showHideInventory = function (scene, player) {
+			if (scene.inventory.visible) {
+				scene.inventory.visible = false;
+				player.body.enable = true;
+			} else {
+				scene.inventory.visible = true;
+				player.body.enable = false;
+			}
+		}
+
+		let makeSlot = function (scene, player) {
+			player.slots = player.slots || [];
+			const numSlots = player.slots.length;
+
+			let column = 0;
+ 			for (let i = numSlots; i > 0; i--) {
+				if (i % 5 === 0) {
+					column = column + 1;
+				}
+			}
+			const slotWidth = 64;
+			const slotHeight = 64;
+			const x = (numSlots % 5) * (Dims.padding * 0.5 + slotWidth) + player.x - Dims.padding * 11;
+			const y = column * (Dims.padding * 0.5 + slotHeight) + player.y - Dims.padding * 6.5;
+
+			let slot = scene.add.rectangle(x, y, slotWidth, slotHeight, 0xFFFFFF, 0.75);
+			slot.setOrigin(0, 0);
+			// let slotText = scene.add.text(slot.x, slot.y, 'S ' + numSlots, {fontSize: '16px', fill: '#000'});
+			return slot;
+		}
+		scene.input.keyboard.on('keydown-E', function (event) {
+			let inventoryGroup = scene.inventoryGroup || scene.add.group();
+			showHideInventory(scene, player);
+			if (scene.inventory.visible)
+			{
+				let alpha = 0.80;
+				let bg = scene.add.rectangle(player.x, player.y, 384, 240, 0x000000, alpha);
+				for (let i = 0; i < 15; i++) {
+					let slot = makeSlot(scene, player);
+					player.slots.push(slot);
+				}
+				inventoryGroup.add(bg);
+				scene.inventoryGroup = inventoryGroup;
+			}
+			else
+			{
+				scene.inventoryGroup = null;
+				inventoryGroup.clear(true, true);
+				inventoryGroup.destroy();
+				player.slots.forEach(function (slot) {
+					slot.destroy();
+				});
+				player.slots = [];
+			}
+
+		}, scene);
 	}
 
 	movement = function (scene, player) {
