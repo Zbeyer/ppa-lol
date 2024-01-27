@@ -2,9 +2,15 @@
 
 `ppa-lol`
 
-Run the project...
+## App (Electron)
 
 ```bash
 npm start
+```
+
+## Browser
+
+```bash
+browser-sync start --server --files "*.html, css/*.css, js/*.js"
 ```
 
