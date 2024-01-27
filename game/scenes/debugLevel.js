@@ -2,7 +2,21 @@ class DebugLevel extends Phaser.Scene {
 
 	create() {
 		let text = this.add.text(Dims.padding, Dims.padding, 'Debug Level', { fontFamily: 'Verdana', fontSize: 24, color: '#ffffff'});
+		let bg = this.add.image(0, 0, 'bg');
+		bg.setScale(this.cameras.main.width / bg.width);
+		let trunk_1 = this.add.image(0, 0, 'tree');
+		trunk_1.setOrigin(0.5, 1.0);
+		let trunk_2 = this.add.image(0, 0, 'tree');
+		trunk_2.setOrigin(0.5, 1.0);
+		let trunk_3 = this.add.image(0, 0, 'tree');
+		trunk_3.setOrigin(0.5, 1.0);
 
+		trunk_1.setScale(this.cameras.main.height / trunk_1.height * 1.5);
+		trunk_2.setScale(trunk_1.scale);
+		trunk_3.setScale(trunk_1.scale);
+
+		trunk_1.setScale(trunk_1.scale * 1.5);
+		trunk_2.setScale(trunk_1.scale * 1.25)
 
 		let player = this.physics.add.sprite(256, 512, 'gem');
 		this.cameras.main.startFollow(player);
@@ -22,8 +36,26 @@ class DebugLevel extends Phaser.Scene {
 
 		this.escapeMenu(this);
 		this.inventory(this, player);
-		// this.debugText(this, player);
+		this.debugText(this, player);
 		this.movement(this, player);
+		this.moveBG(bg, [trunk_1, trunk_2, trunk_3], player);
+	}
+
+	moveBG = function (bg, trunks, player) {
+		setInterval(function () {
+			const paralax_1 = player.x;
+			const paralax_2 = paralax_1 * 0.80;
+			const paralax_3 = paralax_2 * 0.80;
+			const paralax_4 = paralax_3 * 0.80;
+			bg.x = paralax_1; //( - bg.width) / 2;
+			bg.y = player.y; //( - bg.height) / 2;
+			trunks[0].x = paralax_2;
+			trunks[1].x = paralax_3;
+			trunks[2].x = paralax_4;
+			trunks[0].y = bg.y + Dims.padding * 34;
+			trunks[1].y = bg.y + Dims.padding * 55;
+			trunks[2].y = bg.y + Dims.padding * 89;
+		}, Dims.fps);
 	}
 
 	escapeMenu = function (scene) {

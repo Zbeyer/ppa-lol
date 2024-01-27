@@ -7,7 +7,10 @@ class Credit extends Phaser.Scene
 		let helper = new Helpers();
 		credit.setText([
 			'credit to: ',
-			'Main Menu Music - The Mirror of Sound ' + 'by techtheist - Free Music Archive (CC BY)',
+			'Main Menu Music - The Mirror of Sound ' + 'by techtheist - Free Music Archive - (CC BY)',
+			'Cherry Blossom Tree - Casper Nilsson - OpenGameArt.org ',
+			'Pixel Platformer - Kenney - OpenGameArt.org - Creative Commons CC0',
+			'Sunset Background - bess.hamiti@gmail.com - Pixabary - Creative Commons CC0',
 		]);
 		const buttons = [
 			helper.createButton(this, null, function () {

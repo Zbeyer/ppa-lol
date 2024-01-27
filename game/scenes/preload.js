@@ -5,6 +5,9 @@ class Preload extends Phaser.Scene
 		this.load.baseURL = 'game/assets/';
 		// IMAGES
 		this.load.image('gem', 'art/Blue.png');
+		this.load.image('bg', 'art/bg_suset.jpg');
+		this.load.image('tree', 'art/cherry_blossom_trees.png');
+
 
 		// MAPS
 		this.load.tilemapTiledJSON('TestMap1', 'maps/exports/samplemap.json'); // 'map' is the key used in preload
