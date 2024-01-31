@@ -24,6 +24,19 @@ class DebugLevel extends Phaser.Scene {
 		player.setScale(player.scale / 1.334);
 		player.setBounce(0.16);
 
+		let inventory = new PlayerInventory();
+		inventory.player = inventory.player || player;
+		inventory.addItem(new Item("Green Gem", "A green gem", "gemG"));
+		inventory.addItem(null);
+		inventory.addItem(null);
+		inventory.addItem(null);
+		inventory.addItem(new Item("Blue Gem", "A blue gem", "gem"));
+		inventory.addItem(null);
+		inventory.addItem(null);
+		inventory.addItem(new Item("Green Gem", "A green gem", "gemG"));
+		inventory.addItem(new Item("Green Gem", "A green gem", "gemG"));
+		inventory.addItem(new Item("Blue Gem", "A blue gem", "gem"));
+
 		let map = this.make.tilemap({key: 'TestMap2'}); // 'map' is the key used in preload
 		// this.map.setCollision([ 1, ]);
 		map.setCollisionBetween(1, 2000);
@@ -44,17 +57,17 @@ class DebugLevel extends Phaser.Scene {
 	moveBG = function (bg, trunks, player) {
 		setInterval(function () {
 			const paralax_1 = player.x;
-			const paralax_2 = paralax_1 * 0.80;
-			const paralax_3 = paralax_2 * 0.80;
-			const paralax_4 = paralax_3 * 0.80;
+			const paralax_2 = paralax_1 * 0.75;
+			const paralax_3 = paralax_2 * 0.75;
+			const paralax_4 = paralax_3 * 0.75;
 			bg.x = paralax_1; //( - bg.width) / 2;
 			bg.y = player.y; //( - bg.height) / 2;
 			trunks[0].x = paralax_2;
 			trunks[1].x = paralax_3;
 			trunks[2].x = paralax_4;
-			trunks[0].y = bg.y + Dims.padding * 34;
-			trunks[1].y = bg.y + Dims.padding * 55;
-			trunks[2].y = bg.y + Dims.padding * 89;
+			trunks[0].y = bg.y + Dims.padding * 30;
+			trunks[1].y = bg.y + Dims.padding * 50;
+			trunks[2].y = bg.y + Dims.padding * 80;
 		}, Dims.fps);
 	}
 
@@ -64,63 +77,12 @@ class DebugLevel extends Phaser.Scene {
 			scene.scene.stop('DebugLevel')
 		}, scene);
 	}
-	inventory = function (scene, player) {
-		let showHideInventory = function (scene, player) {
-			if (scene.inventory.visible) {
-				scene.inventory.visible = false;
-				player.body.enable = true;
-			} else {
-				scene.inventory.visible = true;
-				player.body.enable = false;
-			}
-		}
-
-		let makeSlot = function (scene, player) {
-			player.slots = player.slots || [];
-			const numSlots = player.slots.length;
-
-			let column = 0;
- 			for (let i = numSlots; i > 0; i--) {
-				if (i % 5 === 0) {
-					column = column + 1;
-				}
-			}
-			const slotWidth = 64;
-			const slotHeight = 64;
-			const x = (numSlots % 5) * (Dims.padding * 0.5 + slotWidth) + player.x - Dims.padding * 11;
-			const y = column * (Dims.padding * 0.5 + slotHeight) + player.y - Dims.padding * 6.5;
-
-			let slot = scene.add.rectangle(x, y, slotWidth, slotHeight, 0xFFFFFF, 0.75);
-			slot.setOrigin(0, 0);
-			// let slotText = scene.add.text(slot.x, slot.y, 'S ' + numSlots, {fontSize: '16px', fill: '#000'});
-			return slot;
-		}
-		scene.input.keyboard.on('keydown-E', function (event) {
-			let inventoryGroup = scene.inventoryGroup || scene.add.group();
-			showHideInventory(scene, player);
-			if (scene.inventory.visible)
-			{
-				let alpha = 0.80;
-				let bg = scene.add.rectangle(player.x, player.y, 384, 240, 0x000000, alpha);
-				for (let i = 0; i < 15; i++) {
-					let slot = makeSlot(scene, player);
-					player.slots.push(slot);
-				}
-				inventoryGroup.add(bg);
-				scene.inventoryGroup = inventoryGroup;
-			}
-			else
-			{
-				scene.inventoryGroup = null;
-				inventoryGroup.clear(true, true);
-				inventoryGroup.destroy();
-				player.slots.forEach(function (slot) {
-					slot.destroy();
-				});
-				player.slots = [];
-			}
-
-		}, scene);
+	inventory = function (scene, player)
+	{
+		const inventory = new PlayerInventory();
+		inventory.player = player;
+		inventory.main(scene, player);
+		console.log('inventory %o', inventory);
 	}
 
 	movement = function (scene, player) {
@@ -140,7 +102,9 @@ class DebugLevel extends Phaser.Scene {
 			backgroundColor: '#001122',
 			padding: {x: 16, y: 16}
 		});
+		let item = new Item("Blue Gem", "A blue gem", "gem");
 		setInterval(function () {
+			let slots = (new PlayerInventory()).getInventory();
 			let now = new Date();
 			debugInfo.x = player.x - debugInfo.width / 2;
 			debugInfo.y = player.y - debugInfo.height - 64;
@@ -149,7 +113,7 @@ class DebugLevel extends Phaser.Scene {
 				'x: ' + player.x.toFixed(1) + '\t\t\t\ty: ' + player.y.toFixed(1),
 				'vx: ' + player.body.velocity.x.toFixed(1) + '\t\t\t\tvy: ' + player.body.velocity.y.toFixed(1),
 				'jumps: ' + player.jumps,
-				'onFloor: ' + player.body.onFloor()
+				'onFloor: ' + player.body.onFloor(),
 			]);
 		}, Dims.fps);
 	}

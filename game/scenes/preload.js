@@ -5,6 +5,7 @@ class Preload extends Phaser.Scene
 		this.load.baseURL = 'game/assets/';
 		// IMAGES
 		this.load.image('gem', 'art/Blue.png');
+		this.load.image('gemG', 'art/Green.png');
 		this.load.image('bg', 'art/bg_suset.jpg');
 		this.load.image('tree', 'art/cherry_blossom_trees.png');
 
