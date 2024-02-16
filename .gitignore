@@ -21,3 +21,7 @@ bin-release/
 *.tiled-session
 *.tiled-project
 dist/**
+build/**
+modules/**
+node_modules/**
+*.log

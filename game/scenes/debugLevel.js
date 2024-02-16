@@ -81,7 +81,7 @@ class DebugLevel extends Phaser.Scene {
 	{
 		const inventory = new PlayerInventory();
 		inventory.player = player;
-		inventory.main(scene, player);
+		inventory.startTracking(scene, player);
 		console.log('inventory %o', inventory);
 	}
 
