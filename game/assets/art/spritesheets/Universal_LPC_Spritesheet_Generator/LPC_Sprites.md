@@ -2,6 +2,31 @@
 
 Free/Libre pixel art sprites from the [Liberated Pixel Cup](https://sanderfrenken.github.io/Universal-LPC-Spritesheet-Character-Generator/lpc.opengameart.org) and [OpenGameArt.org](https://opengameart.org/content/lpc-collection). License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). You must [credit the authors of this artwork.](https://sanderfrenken.github.io/Universal-LPC-Spritesheet-Character-Generator/#)
 
+```txt
+Pink trees originally drawn by C. Nilsson. Two recolors are provided for variety.
+
+Casper Nilsson
+	email: casper.nilsson@gmail.com
+	Freenode: CasperN
+	OpenGameArt.org: C.Nilsson
+
+http://opengameart.org/users/cnilsson
+
+
+Liberated Pixel Cup entry:
+
+http://opengameart.org/content/lpc-cnilsson
+
+
+Recolored trees
+
+William Thompson
+	email: william.thompsonj@gmail.com
+	OpenGameArt.org: williamthompsonj
+
+http://opengameart.org/content/lpc-tree-recolors
+```
+
 
 
 # [Gamefromscratch.com](https://gamefromscratch.com/universal-sprite-sheet-character-creator/)

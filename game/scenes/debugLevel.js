@@ -52,20 +52,49 @@ class DebugLevel extends Phaser.Scene {
 		this.debugText(this, player);
 		this.movement(this, player);
 		this.moveBG(bg, [trunk_1, trunk_2, trunk_3], player);
-		this.anims.create({
-			key: 'walkLeft',
-			frames: this.anims.generateFrameNumbers('witch', { start: 216, end: 224, first: 216 }),
-			frameRate: 8,
-			repeat: -1
-		});
-		this.anims.create({
-			key: 'walkRight',
-			frames: this.anims.generateFrameNumbers('witch', { start: 264, end: 272, first: 264 }),
-			frameRate: 8,
-			repeat: -1
-		});
-		let witch = this.add.sprite(200, 880, 'witch').play('walkRight');
-		witch.setScale(2.0);
+
+		let dSpriteX = -4;
+		const sWidth = LPCSprite.fWidth + Dims.padding;
+		let dSpriteY = 4;
+		const sHeight = LPCSprite.fHeight + Dims.padding * 2.0;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').wUp();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').wRight();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').wLeft();
+
+		dSpriteX = -4;
+		dSpriteY += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').fall();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').dead();
+
+		dSpriteY += 3;
+		dSpriteX = -4;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'skeleton').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'zombie').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'witch').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'fighter').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'monk').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'villager_1').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'villager_2').wDown();
+		dSpriteX += 1;
+		LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'villager_3').wDown();
+
+		dSpriteY += 2;
+		dSpriteX = 0;
+		let witch = LPCSprite.make(this, dSpriteX * sWidth, dSpriteY * sHeight, 'witch')
+		witch.wRight();
+		addAnimations(this, 'witch');
+
 		// witch.flipX = true;
 		let walkLeft = false;
 		let speed = 4.0;
@@ -84,10 +113,10 @@ class DebugLevel extends Phaser.Scene {
 			{
 				// witch.flipX = true;
 				walkLeft = true;
-				witch.play('walkLeft');
+				witch.wLeft();
 			} else if (witch.x < -280) {
 				walkLeft = false;
-				witch.play('walkRight');
+				witch.wRight();
 			}
 		}, Dims.fps);
 	}
