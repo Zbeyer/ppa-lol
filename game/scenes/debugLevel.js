@@ -52,6 +52,44 @@ class DebugLevel extends Phaser.Scene {
 		this.debugText(this, player);
 		this.movement(this, player);
 		this.moveBG(bg, [trunk_1, trunk_2, trunk_3], player);
+		this.anims.create({
+			key: 'walkLeft',
+			frames: this.anims.generateFrameNumbers('witch', { start: 216, end: 224, first: 216 }),
+			frameRate: 8,
+			repeat: -1
+		});
+		this.anims.create({
+			key: 'walkRight',
+			frames: this.anims.generateFrameNumbers('witch', { start: 264, end: 272, first: 264 }),
+			frameRate: 8,
+			repeat: -1
+		});
+		let witch = this.add.sprite(200, 880, 'witch').play('walkRight');
+		witch.setScale(2.0);
+		// witch.flipX = true;
+		let walkLeft = false;
+		let speed = 4.0;
+		setInterval(function () {
+			// if (witch.flipX) {
+			// if (witch.play('walkRight')) {
+			if (walkLeft)
+			{
+				witch.x -= speed;
+			}
+			else
+			{
+				witch.x += speed;
+			}
+			if (witch.x > 840)
+			{
+				// witch.flipX = true;
+				walkLeft = true;
+				witch.play('walkLeft');
+			} else if (witch.x < -280) {
+				walkLeft = false;
+				witch.play('walkRight');
+			}
+		}, Dims.fps);
 	}
 
 	moveBG = function (bg, trunks, player) {

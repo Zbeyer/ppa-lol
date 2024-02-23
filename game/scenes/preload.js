@@ -9,6 +9,8 @@ class Preload extends Phaser.Scene
 		this.load.image('bg', 'art/bg_suset.jpg');
 		this.load.image('tree', 'art/cherry_blossom_trees.png');
 
+		// SPRITESHEETS
+		this.load.spritesheet('witch', 'art/spritesheets/Universal_LPC_Spritesheet_Generator/witch.png', { frameWidth: 64, frameHeight: 64, endFrame: 792 });
 
 		// MAPS
 		this.load.tilemapTiledJSON('TestMap1', 'maps/exports/samplemap.json'); // 'map' is the key used in preload
