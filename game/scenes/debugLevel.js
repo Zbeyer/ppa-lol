@@ -18,11 +18,12 @@ class DebugLevel extends Phaser.Scene {
 		trunk_1.setScale(trunk_1.scale * 1.5);
 		trunk_2.setScale(trunk_1.scale * 1.25)
 
-		let player = this.physics.add.sprite(256, 512, 'gem');
+		let player = LPCSprite.make(this, 256, 512, 'fighter');
+		player.sceneObj = this;
+
 		this.cameras.main.startFollow(player);
 		this.physics.world.enable(player);
 		player.setScale(player.scale / 1.334);
-		player.setBounce(0.16);
 
 		let inventory = new PlayerInventory();
 		inventory.player = inventory.player || player;
@@ -156,6 +157,19 @@ class DebugLevel extends Phaser.Scene {
 		const movement = new PlayerMovement();
 		movement.input = scene.input;
 		movement.player = player;
+		player.onLeft = function ()
+		{
+			player.wLeft();
+		}
+		player.onRight = function ()
+		{
+			player.wRight();
+		}
+		// player.onIdle = function ()
+		// {
+		// 	player.idle();
+		// }
+
 		movement.cursors = scene.input.keyboard.createCursorKeys();
 		setInterval(function () {
 			movement.movement();

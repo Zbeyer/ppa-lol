@@ -1,4 +1,4 @@
-class LPCSprite extends Phaser.GameObjects.Sprite {
+class LPCSprite extends Phaser.Physics.Arcade.Sprite {
 	static fWidth = 64;
 	static fHeight = 64;
 
@@ -23,22 +23,26 @@ class LPCSprite extends Phaser.GameObjects.Sprite {
 		return sprite;
 	}
 	wLeft() {
-		this.play('walkLeft' + this.texureKey);
+		this.play('walkLeft' + this.texureKey, true);
 	}
 	wRight() {
-		this.play('walkRight' + this.texureKey);
+		this.play('walkRight' + this.texureKey, true);
 	}
 	wUp() {
-		this.play('walkUp' + this.texureKey);
+		this.play('walkUp' + this.texureKey, true);
 	}
 	wDown() {
-		this.play('walkDown' + this.texureKey);
+		this.play('walkDown' + this.texureKey, true);
 	}
 	fall() {
-		this.play('fall' + this.texureKey);
+		this.play('fall' + this.texureKey, true);
 	}
 	dead() {
-		this.play('dead' + this.texureKey);
+		this.play('dead' + this.texureKey, true);
+	}
+
+	idle() {
+		// this.stop();
 	}
 }
 
