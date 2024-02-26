@@ -42,7 +42,7 @@ class LPCSprite extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	idle() {
-		// this.stop();
+		this.stop();
 	}
 }
 

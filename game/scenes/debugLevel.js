@@ -165,10 +165,10 @@ class DebugLevel extends Phaser.Scene {
 		{
 			player.wRight();
 		}
-		// player.onIdle = function ()
-		// {
-		// 	player.idle();
-		// }
+		player.onIdle = function ()
+		{
+			player.idle();
+		}
 
 		movement.cursors = scene.input.keyboard.createCursorKeys();
 		setInterval(function () {
